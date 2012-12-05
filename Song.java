@@ -9,6 +9,28 @@ import java.text.*;
 import java.awt.font.*;
 import java.awt.event.*;
 
+ /*
+	The Song class is created by guitar and is built by a tab (text) file
+	in the following format:
+	6 [Number of strings]
+	E | . . .	[First "|" is a separator and is not interpreted]
+	B | . . .	[as a potential note. Notes are separated by spaces]
+	G | . .	4	[and notes not played are  noted as "."]
+	D | 2 2	4	[Any other character is valid input, so long as it]
+	A | 2 2	2	[is understood by guitarist.]
+	E | 0 0	.
+	10.0 		[Tempo of the song. This number can be adjusted to fit music.]
+	-80			[Delay.  Also used to fit tab to music file]
+
+	Notes are stored by string in a character vector inside a GuitarString
+	and are displayed sequentially based on internally calculated "beat".  
+	Notes that are not played (denoted ".") will not be displayed in the 
+	main screen	and are only used in the tab file.  This can be changed in 
+	GuitarString.java.
+ */
+
+
+
 public class Song extends JComponent{
 	private int numStrings;
 	private float tempo;
@@ -18,7 +40,6 @@ public class Song extends JComponent{
 	private JLabel[] track;
 	private int length;
 	private int beat;
-
 
 	public Song () {
 		beat = 0;
@@ -87,7 +108,6 @@ public class Song extends JComponent{
 			System.err.println("Error: " + e.getMessage());
 		}
 	}
-
 	public int length (){
 		return length;
 	}
@@ -113,8 +133,6 @@ public class Song extends JComponent{
 			guitarStrings[i].draw(g);
 		}
 	}
-
-
 	public JLabel[] buildTrack(int beat){
 		for (int i=0; i<numStrings; i++){
 			track[i] = new JLabel(guitarStrings[i].printNotes(beat));
@@ -128,7 +146,6 @@ public class Song extends JComponent{
 			guitarStrings[i].setBeat(beat);
 		}
 	}
-
 	public void printSong (int beat){
 		System.out.println ("Strings: " + numStrings);
 		System.out.println ("Tempo: " + tempo);

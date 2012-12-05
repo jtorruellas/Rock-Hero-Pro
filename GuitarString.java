@@ -8,15 +8,21 @@ import java.io.*;
 import java.util.*;
 import java.lang.Character;
 
+
+/*
+	A GuitarString is populated by a Song
+*/
+
 public class GuitarString extends JComponent{
-	private int stringNumber;
-	private char tuning;
-	private Vector<Character> noteVector;
+	private int stringNumber; //(starting with 1 as the highest string)
+	private char tuning; 
+	private Vector<Character> noteVector; //contains all notes and lack of notes 
 	private int length;
-	private int x;
-	private int y;
-	private int beat;
-	private int numStrings;
+	private int x; //physical location of the track on screen
+	private int y; //based on number of strings
+	private int beat; //current beat from Guitar, needed to draw the string
+	private int numStrings; //total number of strings, to calculate x and y
+	private char blankNote = '.'; //definition of "." as note separator
 
 	public GuitarString(int stringNumber, char tuning, Vector<Character> noteVector, int numStrings) {
 		this.stringNumber = stringNumber;
@@ -29,12 +35,12 @@ public class GuitarString extends JComponent{
 	public void draw (Graphics g){
 		super.paintComponent(g);
 
-		if (beat < 0){
+		if (beat < 0){ //displays song at position 0 during initial delay
 			beat=0;
 		}
 		if (beat < noteVector.size()){
-			x = 95 + (100*(numStrings-stringNumber)); 
-			y = 500;
+			x = 95 + (100*(numStrings-stringNumber)); //sets up strings 
+			y = 500;								  //low to high
 
 			g.setColor(Color.red);
 			g.fillRect (x,0,35,550);
@@ -50,7 +56,7 @@ public class GuitarString extends JComponent{
 				scaledText.addAttribute(TextAttribute.FONT, font);
 				g.drawString(scaledText.getIterator(), x+4, 520);
 				font = new Font("Arial", Font.PLAIN, 60);
-				if (noteVector.get(beat) == '.')
+				if (noteVector.get(beat) == blankNote)  
 					scaledText = new AttributedString("  ");
 				else
 					scaledText = new AttributedString(noteVector.get(beat) + " ");
@@ -61,7 +67,7 @@ public class GuitarString extends JComponent{
 				for (int i=beat+1; i<noteVector.size(); i++){
 					font = new Font("Arial", Font.PLAIN, 18);
 
-					if (noteVector.get(i) == '.')
+					if (noteVector.get(i) == blankNote)
 						scaledText = new AttributedString("  ");
 					else
 						scaledText = new AttributedString(noteVector.get(i) + " ");
@@ -77,7 +83,6 @@ public class GuitarString extends JComponent{
 		
 		}
 	}
-		//g.drawString (printNotes (beat), x, y);
 	public int length (){
 		return length;
 	}
