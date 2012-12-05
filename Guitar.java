@@ -52,13 +52,13 @@ public class Guitar extends JFrame  {
 		settings.setLayout (new FlowLayout());
 		content.add (settings, BorderLayout.NORTH);
 	//Buttons for controls and settings
-	   	final JTextField fileName = new JTextField (15);
+	   	final JTextField fileName = new JTextField ("Tab File Name         ");
 		settings.add (fileName);
 	   	JButton loadButton = new JButton ("Load");
 		settings.add (loadButton);
 		JButton saveButton = new JButton ("Save");
 		settings.add (saveButton);
-		final JTextField mp3File = new JTextField (15);
+		final JTextField mp3File = new JTextField ("WAV File Name          ");
 		settings.add (mp3File);
 	   	JButton mp3LoadButton = new JButton ("Load");
 		settings.add (mp3LoadButton);
@@ -68,10 +68,14 @@ public class Guitar extends JFrame  {
 		controls.add (pauseButton);	
 		JButton stopButton = new JButton ("Stop");
 		controls.add (stopButton);
-		final JTextField tempoField = new JTextField (10);
-		controls.add (tempoField);
-		final JTextField syncField = new JTextField (10);
-		controls.add (syncField);
+		JLabel tempoLabel = new JLabel ("Tempo");
+		settings.add (tempoLabel);
+		final JTextField tempoField = new JTextField (8);
+		settings.add (tempoField);		
+		JLabel syncLabel = new JLabel ("Delay");
+		settings.add (syncLabel);
+		final JTextField syncField = new JTextField (6);
+		settings.add (syncField);
 
 		loadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent addClick){
