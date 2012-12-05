@@ -12,7 +12,4 @@ Priority Improvements:
 - Flip tracks from low-end first to high-end first and back from UI
 - General UI improvements
 - MP3 support
-- Change string tuning from UIRock-Hero-Pro
-=============
-
-Proof of concept hybrid of Guitar Hero and Guitar Pro -  a game-style front-end for real guitar tabulature.  
+- Change string tuning from UI
