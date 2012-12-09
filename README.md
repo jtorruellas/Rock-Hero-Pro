@@ -15,3 +15,7 @@ Priority Improvements:
 - General UI improvements
 - MP3 support
 - Change string tuning from UI
+
+Potential Features:
+- Tuner/Note recognition
+- Variable tempo and time signature
