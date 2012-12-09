@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.io.*;
 import java.util.*;
-import java.lang.Character;
+import java.lang.String;
 import java.text.*;
 import java.awt.font.*;
 import java.awt.event.*;
@@ -16,13 +16,13 @@ import java.awt.event.*;
 	E | . . .	[First "|" is a separator and is not interpreted]
 	B | . . .	[as a potential note. Notes are separated by spaces]
 	G | . .	4	[and notes not played are  noted as "."]
-	D | 2 2	4	[Any other character is valid input, so long as it]
+	D | 2 2	4	[Any other String is valid input, so long as it]
 	A | 2 2	2	[is understood by guitarist.]
 	E | 0 0	.
 	10.0 		[Tempo of the song. This number can be adjusted to fit music.]
 	-80			[Delay.  Also used to fit tab to music file]
 
-	Notes are stored by string in a character vector inside a GuitarString
+	Notes are stored by string in a string vector inside a GuitarString
 	and are displayed sequentially based on internally calculated "beat".  
 	Notes that are not played (denoted ".") will not be displayed in the 
 	main screen	and are only used in the tab file.  This can be changed in 
@@ -35,7 +35,7 @@ public class Song extends JComponent{
 	private int numStrings;
 	private float tempo;
 	private int sync;
-	private Vector<Character> tempVector;
+	private Vector<String> tempVector;
 	private GuitarString[] guitarStrings;
 	private JLabel[] track;
 	private int length;
@@ -47,7 +47,7 @@ public class Song extends JComponent{
 	}
 
 	public void loadSong (String fileName){
-		tempVector = new Vector<Character>();
+		tempVector = new Vector<String>();
 		try {
 			System.out.println(fileName);
 			FileInputStream fstream = new FileInputStream(fileName);
@@ -62,11 +62,11 @@ public class Song extends JComponent{
 					guitarStrings = new GuitarString[numStrings];
 				}
 				else if (i<=numStrings){
-					tempVector = new Vector<Character>();
-					for (int j=4; j<strLine.length(); j+=2){
-						tempVector.add(strLine.charAt(j));
-					}
-					guitarStrings[i-1] = new GuitarString(i, strLine.charAt(0), tempVector, numStrings);
+					tempVector = new Vector<String>();
+					String[] split = strLine.split("\\s");
+					for(int j=2; j<split.length; j++)
+						tempVector.add(split[j]);
+					guitarStrings[i-1] = new GuitarString(i, split[0].charAt(0), tempVector, numStrings);
 				}
 				else if (i==numStrings+1) {
 					tempo = Float.parseFloat(strLine);
@@ -86,7 +86,7 @@ public class Song extends JComponent{
 	}
 
 	public void saveSong (String fileName){
-		tempVector = new Vector<Character>();
+		tempVector = new Vector<String>();
 		try {
 			System.out.println(fileName);
 

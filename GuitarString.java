@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.io.*;
 import java.util.*;
-import java.lang.Character;
+import java.lang.String;
 
 
 /*
@@ -16,15 +16,15 @@ import java.lang.Character;
 public class GuitarString extends JComponent{
 	private int stringNumber; //(starting with 1 as the highest string)
 	private char tuning; 
-	private Vector<Character> noteVector; //contains all notes and lack of notes 
+	private Vector<String> noteVector; //contains all notes and lack of notes 
 	private int length;
 	private int x; //physical location of the track on screen
 	private int y; //based on number of strings
 	private int beat; //current beat from Guitar, needed to draw the string
 	private int numStrings; //total number of strings, to calculate x and y
-	private char blankNote = '.'; //definition of "." as note separator
+	private String blankNote = "."; //definition of "." as note separator
 
-	public GuitarString(int stringNumber, char tuning, Vector<Character> noteVector, int numStrings) {
+	public GuitarString(int stringNumber, char tuning, Vector<String> noteVector, int numStrings) {
 		this.stringNumber = stringNumber;
 		this.tuning = tuning;
 		this.noteVector = noteVector;
@@ -56,7 +56,7 @@ public class GuitarString extends JComponent{
 				scaledText.addAttribute(TextAttribute.FONT, font);
 				g.drawString(scaledText.getIterator(), x+4, 520);
 				font = new Font("Arial", Font.PLAIN, 60);
-				if (noteVector.get(beat) == blankNote)  
+				if (noteVector.get(beat).equals(blankNote))  
 					scaledText = new AttributedString("  ");
 				else
 					scaledText = new AttributedString(noteVector.get(beat) + " ");
@@ -67,7 +67,7 @@ public class GuitarString extends JComponent{
 				for (int i=beat+1; i<noteVector.size(); i++){
 					font = new Font("Arial", Font.PLAIN, 18);
 
-					if (noteVector.get(i) == blankNote)
+					if (noteVector.get(i).equals(blankNote))
 						scaledText = new AttributedString("  ");
 					else
 						scaledText = new AttributedString(noteVector.get(i) + " ");
