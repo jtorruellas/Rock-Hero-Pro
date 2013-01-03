@@ -28,9 +28,6 @@ import java.awt.event.*;
 	main screen	and are only used in the tab file.  This can be changed in 
 	GuitarString.java.
  */
-
-
-
 public class Song extends JComponent{
 	private int numStrings;
 	private float tempo;
@@ -40,18 +37,15 @@ public class Song extends JComponent{
 	private JLabel[] track;
 	private int length;
 	private int beat;
-
+	private String audiofile;
 	public Song () {
 		beat = 0;
-
 	}
-
 	public void loadSong (String fileName){
 		tempVector = new Vector<String>();
 		try {
 			System.out.println(fileName);
 			FileInputStream fstream = new FileInputStream(fileName);
-
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String strLine;
@@ -63,16 +57,23 @@ public class Song extends JComponent{
 				}
 				else if (i<=numStrings){
 					tempVector = new Vector<String>();
-					String[] split = strLine.split("\\s");
+					//for (int j=4; j<strLine.length(); j+=2){
+					//	tempVector.add(strLine.charAt(j));
+					//}
+					String[] split = strLine.split("\\s+");
+					System.out.println("String " + i + " " + split[3]);
 					for(int j=2; j<split.length; j++)
 						tempVector.add(split[j]);
-					guitarStrings[i-1] = new GuitarString(i, split[0].charAt(0), tempVector, numStrings);
+					guitarStrings[i-1] = new GuitarString(i, split[0], tempVector, numStrings);
 				}
 				else if (i==numStrings+1) {
 					tempo = Float.parseFloat(strLine);
 				}
-				else{
+				else if (i==numStrings+2){
 					sync = Integer.parseInt(strLine);
+				}
+				else if (i==numStrings+3){
+					audiofile = strLine;
 				}
 				i++;
 			}
@@ -114,6 +115,9 @@ public class Song extends JComponent{
 	public int sync (){
 		return sync;
 	}
+	public String audiofile (){
+		return audiofile;
+	}
 	public int numStrings (){
 		return numStrings;
 	}
@@ -145,6 +149,10 @@ public class Song extends JComponent{
 		for (int i=0; i<numStrings; i++){
 			guitarStrings[i].setBeat(beat);
 		}
+	}
+	public void setTuning (int string, int dir){
+		guitarStrings[string].setTuning(dir);
+
 	}
 	public void printSong (int beat){
 		System.out.println ("Strings: " + numStrings);

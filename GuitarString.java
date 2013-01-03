@@ -15,7 +15,7 @@ import java.lang.String;
 
 public class GuitarString extends JComponent{
 	private int stringNumber; //(starting with 1 as the highest string)
-	private char tuning; 
+	private String tuning; 
 	private Vector<String> noteVector; //contains all notes and lack of notes 
 	private int length;
 	private int x; //physical location of the track on screen
@@ -24,7 +24,7 @@ public class GuitarString extends JComponent{
 	private int numStrings; //total number of strings, to calculate x and y
 	private String blankNote = "."; //definition of "." as note separator
 
-	public GuitarString(int stringNumber, char tuning, Vector<String> noteVector, int numStrings) {
+	public GuitarString(int stringNumber, String tuning, Vector<String> noteVector, int numStrings) {
 		this.stringNumber = stringNumber;
 		this.tuning = tuning;
 		this.noteVector = noteVector;
@@ -51,8 +51,16 @@ public class GuitarString extends JComponent{
 				g.fillRect (x,415,100,50);
 
 			g.setColor(Color.black);
-				Font font = new Font("Arial", Font.PLAIN, 40);
-				AttributedString scaledText = new AttributedString(tuning + "");
+				Font font = new Font("Arial", Font.PLAIN, 24);
+				AttributedString scaledText;
+				scaledText = new AttributedString("+");
+				scaledText.addAttribute(TextAttribute.FONT, font);
+				g.drawString(scaledText.getIterator(), x+11, 485);
+				scaledText = new AttributedString("-");
+				scaledText.addAttribute(TextAttribute.FONT, font);
+				g.drawString(scaledText.getIterator(), x+14, 542);
+				font = new Font("Arial", Font.PLAIN, 40);
+				scaledText = new AttributedString(tuning + "");
 				scaledText.addAttribute(TextAttribute.FONT, font);
 				g.drawString(scaledText.getIterator(), x+4, 520);
 				font = new Font("Arial", Font.PLAIN, 60);
@@ -86,7 +94,7 @@ public class GuitarString extends JComponent{
 	public int length (){
 		return length;
 	}
-	public char tuning (){
+	public String tuning (){
 		return tuning;
 	}
 	public String printNotes(int beat){
@@ -102,7 +110,76 @@ public class GuitarString extends JComponent{
 
 	public void setBeat (int beat){
 		this.beat = beat;
+	}	
+	public void setTuning (int dir){
+		if (dir == 1){
+			if (tuning.equals("A"))
+				tuning = "A#";
+			else if (tuning.equals("A#"))
+				tuning = "B";
+			else if (tuning.equals("B"))
+				tuning = "C";
+			else if (tuning.equals("C"))
+				tuning = "C#";
+			else if (tuning.equals("C#"))
+				tuning = "D";
+			else if (tuning.equals("D"))
+				tuning = "D#";
+			else if (tuning.equals("D#"))
+				tuning = "E";
+			else if (tuning.equals("E"))
+				tuning = "F";
+			else if (tuning.equals("F"))
+				tuning = "F#";
+			else if (tuning.equals("F#"))
+				tuning = "G";
+			else if (tuning.equals("G"))
+				tuning = "G#";
+			else if (tuning.equals("G#"))
+				tuning = "A";
+		}
+		else if (dir == -1) {
+			if (tuning.equals("A"))
+				tuning = "G#";
+			else if (tuning.equals("A#"))
+				tuning = "A";
+			else if (tuning.equals("B"))
+				tuning = "A#";
+			else if (tuning.equals("C"))
+				tuning = "B";
+			else if (tuning.equals("C#"))
+				tuning = "C";
+			else if (tuning.equals("D"))
+				tuning = "C#";
+			else if (tuning.equals("D#"))
+				tuning = "D";
+			else if (tuning.equals("E"))
+				tuning = "D#";
+			else if (tuning.equals("F"))
+				tuning = "E";
+			else if (tuning.equals("F#"))
+				tuning = "F";
+			else if (tuning.equals("G"))
+				tuning = "F#";
+			else if (tuning.equals("G#"))
+				tuning = "G";
+		}
+		for (int i=0; i<noteVector.size(); i++)
+			if (isInteger(noteVector.get(i)))
+				noteVector.set(i, (Integer.parseInt(noteVector.get(i)) - dir) + "");
+		System.out.println("String " + stringNumber + " retuned to " + tuning);
 	}
+
+	public static boolean isInteger(String s) {
+	    try { 
+	        Integer.parseInt(s); 
+	    } 
+	    catch(NumberFormatException e) { 
+	        return false; 
+	    }
+    	return true;
+	}
+	
 
 	
 

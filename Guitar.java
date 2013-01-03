@@ -36,7 +36,7 @@ public class Guitar extends JFrame  {
 
 		newSong = new Song();
 
-	//Window and layout setup - content, controls, and settings panels
+		//Window and layout setup - content, controls, and settings panels
 		setLocation (100, 100);
 		setSize (800, 800);
 		setDefaultCloseOperation (EXIT_ON_CLOSE);
@@ -51,8 +51,8 @@ public class Guitar extends JFrame  {
 		settings.setBorder (new LineBorder(Color.blue, 2));
 		settings.setLayout (new FlowLayout());
 		content.add (settings, BorderLayout.NORTH);
-	//Buttons for controls and settings
-	   	final JTextField fileName = new JTextField ("Tab File Name         ");
+		//Buttons for controls and settings
+	   	final JTextField fileName = new JTextField ("NewBoston.jt");
 		settings.add (fileName);
 	   	JButton loadButton = new JButton ("Load");
 		settings.add (loadButton);
@@ -76,20 +76,19 @@ public class Guitar extends JFrame  {
 		settings.add (syncLabel);
 		final JTextField syncField = new JTextField (6);
 		settings.add (syncField);
-
 		loadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent addClick){
-				
 				String fn = fileName.getText();
 				newSong.loadSong(fn);
 				newSong.printSong(0);
+				if (newSong.audiofile() != null)
+					mp3File.setText(newSong.audiofile());
 				tempoField.setText(Float.toString(newSong.tempo()));
 				syncField.setText(Integer.toString(newSong.sync()));
 				beat = newSong.sync();
 				newSong.repaint();
 			}	
 		});
-
 		saveButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent addClick){
 				newSong.setTempo(Float.parseFloat(tempoField.getText()));
@@ -98,14 +97,12 @@ public class Guitar extends JFrame  {
 				newSong.saveSong(fn);
 			}	
 		});
-
 		mp3LoadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent addClick){
 				String fn = mp3File.getText();
 				loadMP3(fn);
 			}	
 		});
-
 		final ActionListener playSong = new ActionListener(){
 			public void actionPerformed(ActionEvent evt){
 				if (mp3Loaded)
@@ -123,16 +120,13 @@ public class Guitar extends JFrame  {
 							player.stop();
 						songTimer.stop();
 				}
-				
-		}};
-		
+		}};		
 		goButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent addClick){
 				songTimer = new javax.swing.Timer((int)(newSong.tempo()*(100/6)), playSong);
 				songTimer.start();
 				
 			}});	
-
 		pauseButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent addClick){
 				if (mp3Loaded)
@@ -140,7 +134,6 @@ public class Guitar extends JFrame  {
 				songTimer.stop();
 				
 			}});	
-
 		stopButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent addClick){
 				songTimer.stop();
@@ -153,9 +146,34 @@ public class Guitar extends JFrame  {
 				newSong.setBeat(beat);
 				newSong.repaint();		
 			}});
-		setVisible (true);
-    }
+		content.addMouseListener(new Retune());
 
+		setVisible (true);
+    }		
+    public class Retune implements MouseListener{
+		    public void mouseClicked(MouseEvent e){
+		    	int[] tuners = new int[newSong.numStrings()];
+		    	int x = 112;
+		    	for (int i=0; i<newSong.numStrings(); i++){
+		    		tuners[i] = x;
+		    		x+=100;
+		    	}
+		    	for (int i=0; i<newSong.numStrings(); i++){
+		    		if (e.getX() < tuners[i]+10 && e.getX() > tuners[i]-10 && e.getY() < 585 && e.getY() > 565){
+		    			newSong.setTuning(newSong.numStrings()-1 - i, -1); //1 is uptune, -1 is downtune
+		    			newSong.repaint();
+		    		}
+		    		else if (e.getX() < tuners[i]+10 && e.getX() > tuners[i]-10 && e.getY() < 525 && e.getY() > 510){
+		    			newSong.setTuning(newSong.numStrings()-1 - i, 1); //1 is uptune, -1 is downtune
+		    			newSong.repaint();
+		    		}
+		    	}
+			}
+			public void mousePressed(MouseEvent e) {};
+			public void mouseReleased(MouseEvent e) {};
+			public void mouseEntered(MouseEvent e) {};
+			public void mouseExited(MouseEvent e) {};
+	}
 
 /*Tapan Desai - StackOverflow
  (http://stackoverflow.com/questions/12293071/how-to-play-an-mp3-file-using-java) */
@@ -181,16 +199,3 @@ public class Guitar extends JFrame  {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-	
